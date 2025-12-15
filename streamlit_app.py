@@ -10,19 +10,21 @@ scaler = joblib.load("scaler.pkl")
 
 st.write("Введите данные матери для прогнозирования риска:")
 
+# 6 признаков — как в Flask версии
 age = st.number_input("Age", min_value=10, max_value=60, value=25)
-bp = st.number_input("Blood Pressure", min_value=50, max_value=200, value=120)
+sbp = st.number_input("Systolic Blood Pressure", min_value=50, max_value=200, value=120)
+dbp = st.number_input("Diastolic Blood Pressure", min_value=30, max_value=150, value=80)
 bs = st.number_input("Blood Sugar", min_value=50, max_value=300, value=100)
 body_temp = st.number_input("Body Temperature", min_value=30.0, max_value=45.0, value=37.0)
 heart_rate = st.number_input("Heart Rate", min_value=40, max_value=200, value=90)
 
 if st.button("Predict"):
     try:
-        X = np.array([[float(age), float(bp), float(bs), float(body_temp), float(heart_rate)]])
+        X = np.array([[float(age), float(sbp), float(dbp), float(bs), float(body_temp), float(heart_rate)]])
         X_scaled = scaler.transform(X)
         prediction = model.predict(X_scaled)[0]
 
-        risk_levels = {0: "Low Risk", 1: "Medium Risk", 2: "High Risk"}
+        risk_levels = {0: "Low Risk", 1: "Mid Risk", 2: "High Risk"}
         st.success(f"Result: {risk_levels[prediction]}")
 
     except Exception as e:
