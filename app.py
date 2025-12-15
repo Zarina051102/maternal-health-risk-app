@@ -6,8 +6,8 @@ import joblib
 
 app = Flask(__name__)
 
-model = joblib.load("maternal_risk_model(2).pkl")
-scaler = joblib.load("scaler(2).pkl")
+model = joblib.load("maternal_risk_model.pkl")
+scaler = joblib.load("scaler.pkl")
 
 @app.route("/")
 def home():
@@ -42,4 +42,5 @@ def predict():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
