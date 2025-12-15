@@ -63,8 +63,9 @@ if st.button("Predict"):
     try:
         X = np.array([[age, sbp, dbp, bs, body_temp, heart_rate]])
         X_scaled = scaler.transform(X)
-        prediction = model.predict(X_scaled)[0]
+        prediction = int(model.predict(X_scaled)[0])
         st.success(f"Result: {risk_levels[prediction]}")
+
     except Exception as e:
         st.error("Ошибка в данных. Проверьте, что все поля заполнены корректно.")
         st.write(e)
