@@ -5,8 +5,14 @@ import numpy as np
 st.title("Maternal Health Risk Prediction")
 
 # Загружаем модели
-model = joblib.load("maternal_risk_model.pkl")
-scaler = joblib.load("scaler.pkl")
+@st.cache_resource(show_spinner=False)
+def load_model():
+    model = joblib.load("maternal_risk_model.pkl")
+    scaler = joblib.load("scaler.pkl")
+    return model, scaler
+
+model, scaler = load_model()
+
 
 risk_levels = {
     0: "High Risk",
