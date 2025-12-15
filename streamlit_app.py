@@ -22,20 +22,26 @@ risk_levels = {
 
 st.write("Введите данные матери для прогнозирования риска:")
 
-# --- ТЕСТОВЫЕ ПРИМЕРЫ --------------------------
 st.write("### Тестовые примеры")
 
-if st.button("Test LOW RISK example"):
-    X = np.array([[20, 100, 70, 85, 36.6, 70]])  # очень нормальные значения
+if st.button("Test LOW RISK"):
+    X = np.array([[20, 95, 60, 6.2, 98.0, 65]])
     X_scaled = scaler.transform(X)
     pred = model.predict(X_scaled)[0]
-    st.write("Predicted (Low Risk test):", risk_levels[pred])
+    st.write("Predicted:", risk_levels[pred])
 
-if st.button("Test HIGH RISK example"):
-    X = np.array([[45, 170, 110, 250, 40.5, 150]])  # опасные значения
+if st.button("Test MID RISK"):
+    X = np.array([[28, 110, 75, 7.8, 99.1, 82]])
     X_scaled = scaler.transform(X)
     pred = model.predict(X_scaled)[0]
-    st.write("Predicted (High Risk test):", risk_levels[pred])
+    st.write("Predicted:", risk_levels[pred])
+
+if st.button("Test HIGH RISK"):
+    X = np.array([[45, 170, 110, 250, 103.5, 150]])
+    X_scaled = scaler.transform(X)
+    pred = model.predict(X_scaled)[0]
+    st.write("Predicted:", risk_levels[pred])
+
 
 
 # --- ОСНОВНОЙ ВВОД ДАННЫХ --------------------------
