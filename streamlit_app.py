@@ -8,9 +8,31 @@ st.title("Maternal Health Risk Prediction")
 model = joblib.load("maternal_risk_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
+risk_levels = {
+    0: "High Risk",
+    1: "Low Risk",
+    2: "Mid Risk"
+}
+
 st.write("Введите данные матери для прогнозирования риска:")
 
-# 6 признаков — как в Flask версии
+# --- ТЕСТОВЫЕ ПРИМЕРЫ --------------------------
+st.write("### Тестовые примеры")
+
+if st.button("Test LOW RISK example"):
+    X = np.array([[20, 100, 70, 85, 36.6, 70]])  # очень нормальные значения
+    X_scaled = scaler.transform(X)
+    pred = model.predict(X_scaled)[0]
+    st.write("Predicted (Low Risk test):", risk_levels[pred])
+
+if st.button("Test HIGH RISK example"):
+    X = np.array([[45, 170, 110, 250, 40.5, 150]])  # опасные значения
+    X_scaled = scaler.transform(X)
+    pred = model.predict(X_scaled)[0]
+    st.write("Predicted (High Risk test):", risk_levels[pred])
+
+
+# --- ОСНОВНОЙ ВВОД ДАННЫХ --------------------------
 age = st.number_input("Age", min_value=10, max_value=60, value=25)
 sbp = st.number_input("Systolic Blood Pressure", min_value=50, max_value=200, value=120)
 dbp = st.number_input("Diastolic Blood Pressure", min_value=30, max_value=150, value=80)
@@ -20,21 +42,11 @@ heart_rate = st.number_input("Heart Rate", min_value=40, max_value=200, value=90
 
 if st.button("Predict"):
     try:
-        X = np.array([[float(age), float(sbp), float(dbp), float(bs), float(body_temp), float(heart_rate)]])
+        X = np.array([[age, sbp, dbp, bs, body_temp, heart_rate]])
         X_scaled = scaler.transform(X)
         prediction = model.predict(X_scaled)[0]
-
-        # Исправлено!!!
-        risk_levels = {
-            0: "High Risk",
-            1: "Low Risk",
-            2: "Mid Risk"
-        }
-
         st.success(f"Result: {risk_levels[prediction]}")
-
     except Exception as e:
         st.error("Ошибка в данных. Проверьте, что все поля заполнены корректно.")
         st.write(e)
-
 
