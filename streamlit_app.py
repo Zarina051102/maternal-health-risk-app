@@ -31,20 +31,23 @@ st.write("### Тестовые примеры")
 if st.button("Test LOW RISK"):
     X = np.array([[20, 95, 60, 6.2, 98.0, 65]])
     X_scaled = scaler.transform(X)
-    pred = model.predict(X_scaled)[0]
+    pred = int(model.predict(X_scaled)[0])
     st.write("Predicted:", risk_levels[pred])
+
 
 if st.button("Test MID RISK"):
     X = np.array([[28, 110, 75, 7.8, 99.1, 82]])
     X_scaled = scaler.transform(X)
-    pred = model.predict(X_scaled)[0]
+    pred = int(model.predict(X_scaled)[0])
     st.write("Predicted:", risk_levels[pred])
+
 
 if st.button("Test HIGH RISK"):
     X = np.array([[45, 170, 110, 250, 103.5, 150]])
     X_scaled = scaler.transform(X)
-    pred = model.predict(X_scaled)[0]
+    pred = int(model.predict(X_scaled)[0])
     st.write("Predicted:", risk_levels[pred])
+
 
 
 
