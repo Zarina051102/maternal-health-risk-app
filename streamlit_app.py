@@ -24,10 +24,17 @@ if st.button("Predict"):
         X_scaled = scaler.transform(X)
         prediction = model.predict(X_scaled)[0]
 
-        risk_levels = {0: "Low Risk", 1: "Mid Risk", 2: "High Risk"}
+        # Исправлено!!!
+        risk_levels = {
+            0: "High Risk",
+            1: "Low Risk",
+            2: "Mid Risk"
+        }
+
         st.success(f"Result: {risk_levels[prediction]}")
 
     except Exception as e:
         st.error("Ошибка в данных. Проверьте, что все поля заполнены корректно.")
         st.write(e)
+
 
