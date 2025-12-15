@@ -5,8 +5,8 @@ import numpy as np
 st.title("Maternal Health Risk Prediction")
 
 # Загружаем модели
-model = joblib.load("maternal_risk_model.pkl")
-scaler = joblib.load("scaler.pkl")
+model = joblib.load("maternal_risk_model(2).pkl")
+scaler = joblib.load("scaler(2).pkl")
 
 st.write("Введите данные матери для прогнозирования риска:")
 
