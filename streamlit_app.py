@@ -1,63 +1,56 @@
 import streamlit as st
-import joblib
 import numpy as np
+import joblib
+from catboost import CatBoostClassifier
 
-st.title("Maternal Health Risk Prediction")
-
-# Загружаем модели
-@st.cache_resource(show_spinner=False)
+# ------------------------------
+# LOAD MODEL + SCALER (cached)
+# ------------------------------
+@st.cache_resource
 def load_model():
-    from catboost import CatBoostClassifier
-
     model = CatBoostClassifier()
     model.load_model("maternal_risk_model.cbm")
-
     scaler = joblib.load("scaler.pkl")
     return model, scaler
 
+
 model, scaler = load_model()
 
-
+# Risk labels
 risk_levels = {
     0: "High Risk",
     1: "Low Risk",
     2: "Mid Risk"
 }
 
+
+# ------------------------------
+# UI
+# ------------------------------
+st.title("Maternal Health Risk Prediction")
 st.write("Введите данные матери для прогнозирования риска:")
 
 st.write("### Тестовые примеры")
-
-if st.button("Test LOW RISK"):
-    X = np.array([[20, 95, 60, 6.2, 98.0, 65]])
+if st.button("Test LOW RISK example"):
+    X = np.array([[35, 120, 60, 6.1, 98.0, 76]])
     X_scaled = scaler.transform(X)
     pred = int(model.predict(X_scaled)[0])
-    st.write("Predicted:", risk_levels[pred])
+    st.success(f"Predicted LOW example → {risk_levels[pred]}")
 
-
-if st.button("Test MID RISK"):
-    X = np.array([[28, 110, 75, 7.8, 99.1, 82]])
+if st.button("Test HIGH RISK example"):
+    X = np.array([[25, 140, 85, 15.0, 100.0, 90]])
     X_scaled = scaler.transform(X)
     pred = int(model.predict(X_scaled)[0])
-    st.write("Predicted:", risk_levels[pred])
+    st.warning(f"Predicted HIGH example → {risk_levels[pred]}")
 
 
-if st.button("Test HIGH RISK"):
-    X = np.array([[45, 170, 110, 250, 103.5, 150]])
-    X_scaled = scaler.transform(X)
-    pred = int(model.predict(X_scaled)[0])
-    st.write("Predicted:", risk_levels[pred])
-
-
-
-
-# --- ОСНОВНОЙ ВВОД ДАННЫХ --------------------------
+# Inputs
 age = st.number_input("Age", min_value=10, max_value=60, value=25)
-sbp = st.number_input("Systolic Blood Pressure", min_value=50, max_value=200, value=120)
-dbp = st.number_input("Diastolic Blood Pressure", min_value=30, max_value=150, value=80)
-bs = st.number_input("Blood Sugar", min_value=50, max_value=300, value=100)
-body_temp = st.number_input("Body Temperature", min_value=30.0, max_value=45.0, value=37.0)
-heart_rate = st.number_input("Heart Rate", min_value=40, max_value=200, value=90)
+sbp = st.number_input("Systolic Blood Pressure", min_value=80, max_value=200, value=120)
+dbp = st.number_input("Diastolic Blood Pressure", min_value=40, max_value=150, value=80)
+bs = st.number_input("Blood Sugar", min_value=4.0, max_value=20.0, value=7.0)
+body_temp = st.number_input("Body Temperature (°F)", min_value=95.0, max_value=105.0, value=98.0)
+heart_rate = st.number_input("Heart Rate", min_value=50, max_value=200, value=80)
 
 if st.button("Predict"):
     try:
@@ -65,6 +58,10 @@ if st.button("Predict"):
         X_scaled = scaler.transform(X)
         prediction = int(model.predict(X_scaled)[0])
         st.success(f"Result: {risk_levels[prediction]}")
+    except Exception as e:
+        st.error("Ошибка! Проверьте корректность данных.")
+        st.write(e)
+
 
     except Exception as e:
         st.error("Ошибка в данных. Проверьте, что все поля заполнены корректно.")
