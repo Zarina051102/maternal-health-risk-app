@@ -17,9 +17,15 @@ body_temp = st.number_input("Body Temperature", min_value=30.0, max_value=45.0, 
 heart_rate = st.number_input("Heart Rate", min_value=40, max_value=200, value=90)
 
 if st.button("Predict"):
-    X = np.array([[age, bp, bs, body_temp, heart_rate]])
-    X_scaled = scaler.transform(X)
-    prediction = model.predict(X_scaled)[0]
+    try:
+        X = np.array([[float(age), float(bp), float(bs), float(body_temp), float(heart_rate)]])
+        X_scaled = scaler.transform(X)
+        prediction = model.predict(X_scaled)[0]
 
-    risk_levels = {0: "Low Risk", 1: "Medium Risk", 2: "High Risk"}
-    st.success(f"Result: {risk_levels[prediction]}")
+        risk_levels = {0: "Low Risk", 1: "Medium Risk", 2: "High Risk"}
+        st.success(f"Result: {risk_levels[prediction]}")
+
+    except Exception as e:
+        st.error("Ошибка в данных. Проверьте, что все поля заполнены корректно.")
+        st.write(e)
+
