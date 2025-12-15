@@ -7,7 +7,11 @@ st.title("Maternal Health Risk Prediction")
 # Загружаем модели
 @st.cache_resource(show_spinner=False)
 def load_model():
-    model = joblib.load("maternal_risk_model.pkl")
+    from catboost import CatBoostClassifier
+
+    model = CatBoostClassifier()
+    model.load_model("maternal_risk_model.cbm")
+
     scaler = joblib.load("scaler.pkl")
     return model, scaler
 
