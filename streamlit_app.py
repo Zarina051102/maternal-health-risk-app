@@ -62,7 +62,7 @@ if st.button("Test HIGH RISK example"):
 age = st.number_input("Age", min_value=10, max_value=60, value=25)
 sbp = st.number_input("Systolic Blood Pressure", min_value=80, max_value=200, value=120)
 dbp = st.number_input("Diastolic Blood Pressure", min_value=40, max_value=150, value=80)
-bs = st.number_input("Blood Sugar", min_value=4.0, max_value=20.0, value=7.0)
+bs = st.number_input("Blood Sugar", min_value=2.0, max_value=20.0, value=7.0)
 body_temp = st.number_input("Body Temperature (°F)", min_value=95.0, max_value=105.0, value=98.0)
 heart_rate = st.number_input("Heart Rate", min_value=50, max_value=200, value=80)
 
