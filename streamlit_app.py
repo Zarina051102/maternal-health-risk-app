@@ -41,7 +41,7 @@ st.write("Enter maternal health data to predict the risk level.")
 st.write("### Test Examples")
 
 if st.button("Test LOW RISK example"):
-    X = np.array([[35, 120, 60, 6.1, 98.0, 76]])
+    X = np.array([[35, 120, 60, 6.1, 36.6, 76]])
     X_scaled = scaler.transform(X)
     pred = int(model.predict(X_scaled)[0])
     risk = risk_levels[pred]
@@ -49,7 +49,7 @@ if st.button("Test LOW RISK example"):
     st.info(recommendations[risk])
 
 if st.button("Test HIGH RISK example"):
-    X = np.array([[25, 140, 85, 15.0, 100.0, 90]])
+    X = np.array([[25, 140, 85, 15.0, 40.0, 90]])
     X_scaled = scaler.transform(X)
     pred = int(model.predict(X_scaled)[0])
     risk = risk_levels[pred]
@@ -63,7 +63,8 @@ age = st.number_input("Age", min_value=10, max_value=60, value=25)
 sbp = st.number_input("Systolic Blood Pressure", min_value=80, max_value=200, value=120)
 dbp = st.number_input("Diastolic Blood Pressure", min_value=40, max_value=150, value=80)
 bs = st.number_input("Blood Sugar", min_value=2.0, max_value=20.0, value=7.0)
-body_temp = st.number_input("Body Temperature (°F)", min_value=95.0, max_value=105.0, value=98.0)
+body_temp = st.number_input( "Body Temperature(°C)", min_value=35.0, max_value=42.0, value=36.6)
+)
 heart_rate = st.number_input("Heart Rate", min_value=50, max_value=200, value=80)
 
 # ------------------------------
