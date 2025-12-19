@@ -15,18 +15,31 @@ def load_model():
 
 model, scaler = load_model()
 
-# Risk labels
+# ------------------------------
+# RISK LABELS
+# ------------------------------
 risk_levels = {
     0: "High Risk",
     1: "Low Risk",
     2: "Mid Risk"
 }
 
-# Simple recommendations (educational, non-medical)
+# ------------------------------
+# SIMPLE RECOMMENDATIONS (educational)
+# ------------------------------
 recommendations = {
-    "Low Risk": "Your indicators are within normal ranges. Continue regular check-ups and maintain a healthy lifestyle.",
-    "Mid Risk": "Some indicators are outside optimal ranges. It is recommended to monitor your health more closely and consult a healthcare professional.",
-    "High Risk": "Several indicators suggest a high health risk. Please seek medical advice as soon as possible for further evaluation."
+    "Low Risk": (
+        "Your indicators are within normal ranges. "
+        "Continue regular check-ups and maintain a healthy lifestyle."
+    ),
+    "Mid Risk": (
+        "Some indicators are outside optimal ranges. "
+        "It is recommended to monitor your health more closely and consult a healthcare professional."
+    ),
+    "High Risk": (
+        "Several indicators suggest a high health risk. "
+        "Please seek medical advice as soon as possible for further evaluation."
+    )
 }
 
 # ------------------------------
@@ -48,12 +61,20 @@ if st.button("Test LOW RISK example"):
     st.success(f"Predicted Risk Level: {risk}")
     st.info(recommendations[risk])
 
+if st.button("Test MID RISK example"):
+    X = np.array([[30, 130, 80, 9.5, 37.8, 85]])
+    X_scaled = scaler.transform(X)
+    pred = int(model.predict(X_scaled)[0])
+    risk = risk_levels[pred]
+    st.warning(f"Predicted Risk Level: {risk}")
+    st.info(recommendations[risk])
+
 if st.button("Test HIGH RISK example"):
     X = np.array([[25, 140, 85, 15.0, 40.0, 90]])
     X_scaled = scaler.transform(X)
     pred = int(model.predict(X_scaled)[0])
     risk = risk_levels[pred]
-    st.warning(f"Predicted Risk Level: {risk}")
+    st.error(f"Predicted Risk Level: {risk}")
     st.error(recommendations[risk])
 
 # ------------------------------
@@ -63,7 +84,12 @@ age = st.number_input("Age", min_value=10, max_value=60, value=25)
 sbp = st.number_input("Systolic Blood Pressure", min_value=80, max_value=200, value=120)
 dbp = st.number_input("Diastolic Blood Pressure", min_value=40, max_value=150, value=80)
 bs = st.number_input("Blood Sugar", min_value=2.0, max_value=20.0, value=7.0)
-body_temp = st.number_input( "Body Temperature(°C)", min_value=35.0, max_value=42.0, value=36.6)
+body_temp = st.number_input(
+    "Body Temperature (°C)",
+    min_value=35.0,
+    max_value=42.0,
+    value=36.6
+)
 heart_rate = st.number_input("Heart Rate", min_value=50, max_value=200, value=80)
 
 # ------------------------------
@@ -76,8 +102,17 @@ if st.button("Predict"):
         prediction = int(model.predict(X_scaled)[0])
         risk = risk_levels[prediction]
 
-        st.success(f"Predicted Risk Level: {risk}")
-        st.info(recommendations[risk])
+        if risk == "Low Risk":
+            st.success(f"Predicted Risk Level: {risk}")
+            st.info(recommendations[risk])
+
+        elif risk == "Mid Risk":
+            st.warning(f"Predicted Risk Level: {risk}")
+            st.info(recommendations[risk])
+
+        elif risk == "High Risk":
+            st.error(f"Predicted Risk Level: {risk}")
+            st.error(recommendations[risk])
 
     except Exception as e:
         st.error("Error! Please check that all input values are valid.")
