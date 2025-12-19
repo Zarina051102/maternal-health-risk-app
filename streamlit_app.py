@@ -64,7 +64,6 @@ sbp = st.number_input("Systolic Blood Pressure", min_value=80, max_value=200, va
 dbp = st.number_input("Diastolic Blood Pressure", min_value=40, max_value=150, value=80)
 bs = st.number_input("Blood Sugar", min_value=2.0, max_value=20.0, value=7.0)
 body_temp = st.number_input( "Body Temperature(°C)", min_value=35.0, max_value=42.0, value=36.6)
-)
 heart_rate = st.number_input("Heart Rate", min_value=50, max_value=200, value=80)
 
 # ------------------------------
